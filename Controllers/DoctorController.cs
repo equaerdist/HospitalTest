@@ -16,7 +16,7 @@ public class DoctorController(HospitalContext ctx, IMapper mapper) : ControllerB
     }
     // GET api/<DoctorController>/5
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetDoctorById(int id)
+    public async Task<IActionResult> GetDoctorById(long id)
     {
         var doctor = await ctx.Doctors.FirstOrDefaultAsync(s => s.Id == id);
         if(doctor is null)
@@ -32,7 +32,8 @@ public class DoctorController(HospitalContext ctx, IMapper mapper) : ControllerB
         var dbDoctor = mapper.Map<Doctor>(newDoctor);
         await ctx.Doctors.AddAsync(dbDoctor);
         await ctx.SaveChangesAsync();
-        return CreatedAtAction(nameof(GetDoctorById), new { id = dbDoctor.Id });
+        var doctorDto = mapper.Map<GetSingleDoctorDto>(dbDoctor); 
+        return CreatedAtAction(nameof(GetDoctorById), new { id = dbDoctor.Id }, doctorDto);
     }
 
     // PUT api/<DoctorController>/5
