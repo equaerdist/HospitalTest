@@ -38,13 +38,20 @@ public class DoctorController(HospitalContext ctx, IMapper mapper) : ControllerB
 
     // PUT api/<DoctorController>/5
     [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    public async Task<IActionResult> UpdateDoctor(long id, [FromBody] UpdateDoctorDto editedDoctor)
     {
+        var doctorFromDb = await ctx.Doctors.FirstOrDefaultAsync(s => s.Id == id);
+        if(doctorFromDb is null) return NotFound();
+        mapper.Map(editedDoctor, doctorFromDb);
+        await ctx.SaveChangesAsync();
+        return NoContent();
     }
 
     // DELETE api/<DoctorController>/5
     [HttpDelete("{id}")]
-    public void Delete(int id)
+    public async Task<IActionResult> DeleteDoctor(long id)
     {
+        await ctx.Doctors.Where(d => d.Id == id).ExecuteDeleteAsync();
+        return NoContent();
     }
 }

@@ -8,5 +8,7 @@ public class HospitalProfile : Profile
     {
         CreateMap<Doctor, GetSingleDoctorDto>();
         CreateMap<AddDoctorDto, Doctor>();
+        CreateMap<UpdateDoctorDto, Doctor>()
+            .ForMember(x => x.Id, cfg => cfg.Ignore());
     }
 }
