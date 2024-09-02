@@ -1,4 +1,6 @@
 
+using HospitalTest.Infrastructure;
+
 namespace HospitalTest;
 
 public class Program
@@ -10,6 +12,7 @@ public class Program
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddAppServices();
 
         var app = builder.Build();
 
